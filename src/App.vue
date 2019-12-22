@@ -1,17 +1,18 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>多语言生成</h1>
+    <p>eg.上传多语言excel文件,下载多语言js文件</p>
+    <Language />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Language from './components/Language.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Language
   }
 }
 </script>
