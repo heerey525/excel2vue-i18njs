@@ -12,9 +12,15 @@ export default {
     return {
       langList: [], // 存储excel变量名数据
       cnList: [], // 存储excel中文数据
+      cnjsList: [], // 存储excel中文解释数据
       enList: [], // 存储excel英文数据
+      viList: [], // 存储excel越南语数据
+      thList: [], // 存储excel泰国语数据
       cnObj: {}, // 存储最终中文数据
+      cnjsObj: {}, // 存储最终中文解释数据
       enObj: {}, // 存储最终英文数据
+      viObj: {}, // 存储最终越南语数据
+      thObj: {}, // 存储最终越南语数据
     }
   },
   methods: {
@@ -42,7 +48,13 @@ export default {
                   }else if(key.substring(0,1) === 'B'){
                     this.cnList.push(worksheet[key].v)
                   }else if(key.substring(0,1) === 'C'){
+                    this.cnjsList.push(worksheet[key].v)
+                  }else if(key.substring(0,1) === 'D'){
                     this.enList.push(worksheet[key].v)
+                  }else if(key.substring(0,1) === 'E'){
+                    this.viList.push(worksheet[key].v)
+                  }else if(key.substring(0,1) === 'F'){
+                    this.thList.push(worksheet[key].v)
                   }
                 }
             }
@@ -52,13 +64,29 @@ export default {
     // 数组合成json
     produceJSON(){
       this.cnList.map((item,index)=>{
+        // item.replcace(/\r/g, '')
         this.cnObj[this.langList[index]]=item
       })
+      // this.cnjsList.map((item,index)=>{
+      //   this.cnjsObj[this.langList[index]]=item
+      // })
       this.enList.map((item,index)=>{
         this.enObj[this.langList[index]]=item
       })
+      this.viList.map((item,index)=>{
+        this.viObj[this.langList[index]]=item
+      })
+      this.thList.map((item,index)=>{
+        this.thObj[this.langList[index]]=item
+      })
+
       this.saveJSON(this.cnObj,'zh-CN')
-      this.saveJSON(this.enObj,'en-US')
+      // 解释中文
+      // this.saveJSON(this.cnjsObj,'zh-CNjs')
+      // this.saveJSON(this.enObj,'en-US')
+      // this.saveJSON(this.enObj,'en-IN')
+      // this.saveJSON(this.viObj,'vi')
+      // this.saveJSON(this.thObj,'th')
     },
     // 输出js文件
     saveJSON(data, filename){
@@ -71,7 +99,7 @@ export default {
       if(typeof data === 'object'){
         data = JSON.stringify(data, undefined, 4)
       }
-      var blob = new Blob([data], {type: 'text/javascript'}),
+      var blob = new Blob(['export default ' + data], {type: 'text/javascript'}),
       e = document.createEvent('MouseEvents'),
       a = document.createElement('a')
       a.download = filename
